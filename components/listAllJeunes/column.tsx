@@ -6,11 +6,9 @@ import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox"
-import { redirect } from 'next/navigation'
-import { deleteJeune } from "@/lib/controllers/jeune";
+import { redirect, useRouter } from 'next/navigation'
 import { cn } from "@/lib/utils";
 import { bddJeune } from "@/lib/types";
-import axios from "axios";
 
 export const columns: ColumnDef<bddJeune>[] = [
     {
@@ -107,6 +105,7 @@ export const columns: ColumnDef<bddJeune>[] = [
         header: () => <div className="text-center font-bold">Actions</div>,
         cell: ({ row }) => {
             const jeune = row.original
+            const router = useRouter()
             return (
                 <DropdownMenu >
                     <DropdownMenuTrigger asChild>
@@ -140,7 +139,8 @@ export const columns: ColumnDef<bddJeune>[] = [
                                     responseData || "Impossible de modifier la tâche"
                                 );
                             }
-                            redirect('/')
+
+                            router.refresh()
                         }}
                             className="text-red-500 focus:text-red-500 focus:bg-red-100 hover:cursor-pointer">
                             Supprimer
