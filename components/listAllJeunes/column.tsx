@@ -129,7 +129,7 @@ export const columns: ColumnDef<bddJeune>[] = [
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={async () => {
                             const response = await fetch("/api/v1/jeunes/delete", {
-                                method: "PUT",
+                                method: "POST",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify({ id: jeune.id })
                             });
