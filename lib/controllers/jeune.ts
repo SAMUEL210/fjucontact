@@ -28,8 +28,11 @@ export async function createJeune(values:Jeune){
 export async function getAllJeunes(){
     try{
         const allJeunes = await prisma.jeunes.findMany({
+            where: {
+                isDeleted: false
+            },
             orderBy:{
-                prenom: 'desc'
+                prenom: 'asc'
             }
         })
         if(allJeunes) return allJeunes
