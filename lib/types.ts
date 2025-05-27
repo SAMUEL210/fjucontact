@@ -13,6 +13,7 @@ export type bddJeune = {
     telephone: string
     email: string
     tribu: string
+    isDeleted: boolean
 }
 
 export type smsSelectedJeuneListing = {
