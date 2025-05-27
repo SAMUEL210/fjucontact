@@ -15,7 +15,8 @@ async function getJeunes(): Promise<bddJeune[]> {
                 prenom: unJeune.prenom ? unJeune.prenom.charAt(0).toLocaleUpperCase() + unJeune.prenom.slice(1) : '',
                 telephone: unJeune.telephone ? unJeune.telephone : '',
                 email: unJeune.email ? unJeune.email.toLocaleLowerCase() : '',
-                tribu: unJeune.tribu ? unJeune.tribu : ''
+                tribu: unJeune.tribu ? unJeune.tribu : '',
+                isDeleted: unJeune.isDeleted
             }
             JeunesTable.push(o);
         }

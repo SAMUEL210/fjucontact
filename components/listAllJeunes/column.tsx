@@ -128,7 +128,18 @@ export const columns: ColumnDef<bddJeune>[] = [
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={async () => {
-                            axios.delete(`/api/v1/jeunes?id=${jeune.id}`)
+                            const response = await fetch("/api/v1/jeunes/delete", {
+                                method: "PUT",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ id: jeune.id })
+                            });
+                            const responseData = await response.json();
+
+                            if (!response.ok) {
+                                throw new Error(
+                                    responseData || "Impossible de modifier la tâche"
+                                );
+                            }
                             redirect('/')
                         }}
                             className="text-red-500 focus:text-red-500 focus:bg-red-100 hover:cursor-pointer">
