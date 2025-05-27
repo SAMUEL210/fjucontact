@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox"
 import { redirect, useRouter } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 import { cn } from "@/lib/utils";
 import { bddJeune } from "@/lib/types";
 
@@ -139,8 +140,7 @@ export const columns: ColumnDef<bddJeune>[] = [
                                     responseData || "Impossible de modifier la tâche"
                                 );
                             }
-
-                            router.refresh()
+                            revalidatePath('/')
                         }}
                             className="text-red-500 focus:text-red-500 focus:bg-red-100 hover:cursor-pointer">
                             Supprimer
