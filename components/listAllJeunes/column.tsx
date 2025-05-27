@@ -140,7 +140,7 @@ export const columns: ColumnDef<bddJeune>[] = [
                                 );
                             }
 
-                            router.refresh()
+                            router.push('/')
                         }}
                             className="text-red-500 focus:text-red-500 focus:bg-red-100 hover:cursor-pointer">
                             Supprimer
