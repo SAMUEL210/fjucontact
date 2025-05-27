@@ -4,6 +4,7 @@ export type Jeune = {
     telephone: string | null
     email: string | null
     tribu: string | null
+    isDeleted: boolean
 }
 
 export type bddJeune = {

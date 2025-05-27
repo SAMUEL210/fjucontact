@@ -2,7 +2,7 @@ import prisma from '@/lib/prisma';
 import { identifianSchema } from '@/lib/zod';
 import { NextRequest, NextResponse } from 'next/server';
 //import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
+//import { headers } from "next/headers";
  
 export async function POST( request: NextRequest){
     //const session = await auth.api.getSession({

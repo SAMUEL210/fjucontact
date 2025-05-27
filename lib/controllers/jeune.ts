@@ -11,7 +11,8 @@ export async function createJeune(values:Jeune){
                 prenom: values.prenom,
                 telephone: values.telephone,
                 email: values.email,
-                tribu: values.tribu
+                tribu: values.tribu,
+                isDeleted: false
             }
         })
         if(newJeune) return newJeune
