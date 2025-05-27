@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma';
 import { identifianSchema } from '@/lib/zod';
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache'
 //import { auth } from "@/lib/auth";
 //import { headers } from "next/headers";
  
@@ -30,7 +31,8 @@ export async function POST( request: NextRequest){
         }
 
         return  NextResponse.json({ok: 'ok'}, {status: 200});
-    
+        revalidatePath('/')
+        
         }catch(error){
             console.error("Erreur lors de suppression du jeune : ", error);
             return NextResponse.json({message: "Une erreur inattendu s'est produite"}, {status: 500});
