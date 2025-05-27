@@ -1,11 +1,15 @@
-import { getAllJeunes } from "@/lib/controllers/jeune"
+'use client'
+
 import { columns } from "./listAllJeunes/column"
 import { DataTable } from "./listAllJeunes/data-table"
 import { bddJeune } from "@/lib/types"
 import SendSMS from "@/components/sendSMS"
+import useSWR from "swr"
 
-async function getJeunes(): Promise<bddJeune[]> {
-    const AllJeunes = await getAllJeunes()
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
+function getJeunes() {
+    const { data: AllJeunes, error, isLoading } = useSWR<bddJeune[]>("/api/v1/jeunes", fetcher);
     if (AllJeunes) {
         const JeunesTable: bddJeune[] = []
         for (let unJeune of AllJeunes) {
@@ -25,8 +29,8 @@ async function getJeunes(): Promise<bddJeune[]> {
     return []
 }
 
-export default async function ListAllJeunes() {
-    const data = await getJeunes()
+export default function ListAllJeunes() {
+    const data = getJeunes()
     return (
         <div className="container mx-auto px-10">
             <SendSMS from={'HEADER'} listSelected={[]} data={data} />

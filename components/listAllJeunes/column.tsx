@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { redirect, useRouter } from 'next/navigation'
 import { cn } from "@/lib/utils";
 import { bddJeune } from "@/lib/types";
+import { mutate } from "swr"
 
 export const columns: ColumnDef<bddJeune>[] = [
     {
@@ -140,7 +141,7 @@ export const columns: ColumnDef<bddJeune>[] = [
                                 );
                             }
 
-                            router.push('/')
+                            mutate("/api/v1/jeunes");
                         }}
                             className="text-red-500 focus:text-red-500 focus:bg-red-100 hover:cursor-pointer">
                             Supprimer
