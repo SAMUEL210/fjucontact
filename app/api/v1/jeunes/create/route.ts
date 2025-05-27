@@ -23,7 +23,7 @@ export async function POST( request: NextRequest){
                     nom: jeuneData.nom.toLocaleUpperCase(),
                     prenom: jeuneData.prenom.charAt(0).toLocaleUpperCase() + jeuneData.prenom.slice(1),
                     telephone: jeuneData.telephone,
-                    email: jeuneData.email.toLocaleLowerCase,
+                    email: jeuneData.email.toLocaleLowerCase(),
                     tribu: jeuneData.tribu,
                     isDeleted: false
                 }
