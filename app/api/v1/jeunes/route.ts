@@ -11,7 +11,7 @@ export async function GET(){
     //})
     //if(session != null){
         try {
-            const todos = await prisma.jeunes.findMany({
+            const deletedJeune = await prisma.jeunes.findMany({
                 where: {
                     isDeleted: false,
                 },
@@ -19,7 +19,7 @@ export async function GET(){
                     createdAt: 'asc',
                 },
             });
-            return NextResponse.json(todos);
+            return NextResponse.json(deletedJeune);
         }catch (error){
             console.error('Erreur lors du chargement: ', error);
             return NextResponse.json({message: "Une erreur innattendu s'est produit"}, {status: 500});      
