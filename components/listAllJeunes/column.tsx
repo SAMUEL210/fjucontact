@@ -2,9 +2,9 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react"
-import { ArrowUpDown } from "lucide-react"
+import { ArrowUpDown, TrashIcon, Edit2Icon, DoorOpen } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger, DropdownMenuLabel } from "@/components/ui/dropdown-menu";
 import { Checkbox } from "@/components/ui/checkbox"
 import { redirect, useRouter } from 'next/navigation'
 import { cn } from "@/lib/utils";
@@ -116,15 +116,17 @@ export const columns: ColumnDef<bddJeune>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="start" className="text-center">
+                        <DropdownMenuLabel className="font-bold text-md">Actions</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
                         <DropdownMenuItem
                             onClick={() => redirect("/dashboard/competitions/" + jeune.id)}
                             className="text-green-800 focus:text-green-800 focus:bg-green-100 hover:cursor-pointer">
-                            Ouvrir
+                            <DoorOpen className="text-green-800" />Ouvrir
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem
                             className="text-orange-400 focus:text-orange-400 focus:bg-orange-100 hover:cursor-pointer">
-                            Modifier
+                            <Edit2Icon className="text-orange-400" />Modifier
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={async () => {
@@ -144,7 +146,7 @@ export const columns: ColumnDef<bddJeune>[] = [
                             mutate("/api/v1/jeunes");
                         }}
                             className="text-red-500 focus:text-red-500 focus:bg-red-100 hover:cursor-pointer">
-                            Supprimer
+                            <TrashIcon className="text-red-500" /> Supprimer
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu >
