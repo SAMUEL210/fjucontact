@@ -4,6 +4,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 import {
     MultiSelector, MultiSelectorContent, MultiSelectorInput, MultiSelectorItem, MultiSelectorList, MultiSelectorTrigger
 } from "@/components/ui/extension/multi-select"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Send } from 'lucide-react'
@@ -49,15 +50,17 @@ export default function SendSMS({ listSelected, data, from }: { listSelected: sm
                         Veuillez Vérifier et remplir les champs avant d'envoyer svp!
                     </SheetDescription>
                 </SheetHeader>
-                <div className='px-4'>
+                <div className="px-4">
                     <MultiSelector
                         values={value}
                         onValuesChange={setValue}
                         data={data}
                     >
-                        <MultiSelectorTrigger>
-                            <MultiSelectorInput placeholder="Ajouter des jeunes" className="text-sm italic" />
-                        </MultiSelectorTrigger>
+                        <ScrollArea className="h-fit max-h-[150px] border-1 border-black rounded-lg">
+                            <MultiSelectorTrigger>
+                                <MultiSelectorInput placeholder="Ajouter des jeunes" className="text-sm" />
+                            </MultiSelectorTrigger>
+                        </ScrollArea>
                         <MultiSelectorContent>
                             <MultiSelectorList>
                                 {
@@ -72,6 +75,7 @@ export default function SendSMS({ listSelected, data, from }: { listSelected: sm
                         </MultiSelectorContent>
                     </MultiSelector>
                 </div>
+
                 <div className="grid gap-4 py-1 p-4">
                     <SmsForm numTelephones={value} data={data} />
                 </div>

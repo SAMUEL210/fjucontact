@@ -61,7 +61,7 @@ export default function SmsForm({ numTelephones, data }: { numTelephones: string
                         {`Taille : ${JSON.stringify(form.watch('message')).length - 2} caractères saisis`}
                     </span>
                 </div>
-                <Button className="bg-green-800 hover:bg-green-600 hover:cursor-pointer" type="submit">Envoyer</Button>
+                <Button className="w-full bg-green-800 hover:bg-green-600 hover:cursor-pointer" type="submit">Envoyer</Button>
             </form>
 
         </Form>
