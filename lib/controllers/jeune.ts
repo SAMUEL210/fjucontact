@@ -7,12 +7,14 @@ export async function createJeune(values:Jeune){
     try{
         const newJeune = await prisma.jeunes.create({
             data:{
-                nom: values.nom,
-                prenom: values.prenom,
+                nom: values.nom?.toLocaleUpperCase(),
+                prenom: values.prenom
+                    ? values.prenom.charAt(0).toLocaleUpperCase() + values.prenom.slice(1)
+                    : "",
                 telephone: values.telephone,
                 email: values.email,
                 tribu: values.tribu,
-                isDeleted: false
+                isDeleted: values.isDeleted
             }
         })
         if(newJeune) return newJeune
@@ -55,6 +57,32 @@ export async function deleteJeune(id:string){
             }
         })
         if(status) return status
+        return null
+    }catch(e){
+        if (e instanceof Error) {
+            throw new Error("Une erreur s'est produite : " + e.message)
+        } else {
+            throw new Error("Une erreur s'est produite : " + String(e))
+        }
+    }
+}
+
+export async function updateJeune(id: string, values:Jeune){
+    try{
+        const newJeune = await prisma.jeunes.update({
+            where:{
+                id:id
+            },
+            data:{
+                nom: values.nom ? values.nom.toLocaleUpperCase() : "",
+                prenom: values.prenom ? values.prenom.charAt(0).toLocaleUpperCase() + values.prenom.slice(1) : "",
+                telephone: values.telephone ? values.telephone : "",
+                email: values.email ? values.email.toLocaleLowerCase() : "",
+                tribu: values.tribu ? values.tribu : "",
+                isDeleted: values.isDeleted
+            }
+        })
+        if(newJeune) return newJeune
         return null
     }catch(e){
         if (e instanceof Error) {
