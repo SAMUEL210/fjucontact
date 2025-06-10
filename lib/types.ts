@@ -26,4 +26,11 @@ export type listSelectedJeune = {
     id: string;
 }
 
+export type smsInfos = {
+    idUser: string | null
+    idJeune : string
+    message: string
+    status: string
+}
+
 export type TValue = any;

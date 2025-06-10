@@ -23,6 +23,20 @@ model Jeunes {
   isDeleted Boolean  @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  sms       sms[]
+
+  @@unique([telephone])
+}
+
+model sms {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  idUser    String?
+  idJeune   String   @map("jeunesId") @db.ObjectId // Reference to Jeunes model
+  message   String
+  status    String //"sent" | "failed"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  jeunes    Jeunes   @relation(fields: [idJeune], references: [id], onDelete: Cascade)
 }
 
 model User {
