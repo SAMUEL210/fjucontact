@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto_Condensed } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "sonner"
 
 const robotoCondensed = Roboto_Condensed({
   weight: ['400', '700'],
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="fr">
       <body className={`${robotoCondensed.className}`}>
         {children}
+        <Toaster richColors expand={false} />
       </body>
     </html>
   );
