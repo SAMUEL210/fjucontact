@@ -9,6 +9,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { bddJeune } from "@/lib/types"
 import { sendSms } from "@/lib/controllers/functions"
 import { smsSchema } from "@/lib/zod"
+import { toast } from "sonner"
+import { createSms } from "@/lib/controllers/sms"
 
 export default function SmsForm({ numTelephones, data }: { numTelephones: string[], data: bddJeune[] }) {
 
@@ -26,10 +28,14 @@ export default function SmsForm({ numTelephones, data }: { numTelephones: string
                 if (values.message.includes('$$$')) {
                     values.message = values.message.replace('$$$', `${jeune.prenom}`)
                 }
-                let sms = await sendSms(jeune.telephone, values.message)
-                console.log(sms)
+                let sms = await sendSms("", jeune, values.message)
+                if (sms.success) {
+                    toast.success(`SMS envoyé à ${jeune.prenom} (${jeune.telephone})`)
+                }
+                else {
+                    toast.error(`Erreur lors de l'envoi du SMS à ${jeune.prenom} (${jeune.telephone})`)
+                }
             }
-            form.reset();
         } catch (error) {
             console.error("Form submission error", error);
         }

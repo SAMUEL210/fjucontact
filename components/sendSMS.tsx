@@ -37,9 +37,10 @@ export default function SendSMS({ listSelected, data, from }: { listSelected: sm
         }
     }
     const [value, setValue] = useState<string[]>(listJeuneSelected);
+    const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <Sheet>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
                 {TriggerButton(from)}
             </SheetTrigger>
@@ -75,7 +76,6 @@ export default function SendSMS({ listSelected, data, from }: { listSelected: sm
                         </MultiSelectorContent>
                     </MultiSelector>
                 </div>
-
                 <div className="grid gap-4 py-1 p-4">
                     <SmsForm numTelephones={value} data={data} />
                 </div>
