@@ -8,8 +8,14 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Checkbox } from "@/components/ui/checkbox"
 import { redirect, useRouter } from 'next/navigation'
 import { cn } from "@/lib/utils";
-import { bddJeune } from "@/lib/types";
+import { bddJeune, Jeune } from "@/lib/types";
 import { mutate } from "swr"
+import UpdateJeune from "../updateJeune";
+import { Sheet, SheetTrigger, SheetContent, SheetTitle, SheetDescription, SheetHeader } from "../ui/sheet";
+import JeuneForm from "@/components/JeuneForm"
+import { updateJeune } from "@/lib/controllers/jeune";
+import { useState } from "react";
+import { toast } from "sonner";
 
 export const columns: ColumnDef<bddJeune>[] = [
     {
@@ -106,50 +112,93 @@ export const columns: ColumnDef<bddJeune>[] = [
         header: () => <div className="text-center font-bold">Actions</div>,
         cell: ({ row }) => {
             const jeune = row.original
-            const router = useRouter()
+
+            const [open, setOpen] = useState(false)
+
+            const onSubmit = async (values: Jeune) => {
+                try {
+                    const updatedJeune = await updateJeune(jeune.id, values)
+                    if (updatedJeune) {
+                        setOpen(false)
+                        mutate("/api/v1/jeunes");
+                        toast.success('Jeune modifié!')
+                    } else {
+                        toast.error("Une erreur s'est produite")
+                    }
+                } catch (error) {
+                    console.error("Form submission error", error);
+                }
+            }
             return (
-                <DropdownMenu >
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 p-0 w-full text-center">
-                            <span className="sr-only text-center">Ouvrir le menu</span>
-                            <MoreHorizontal className="h-4 w-4 text-right" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="start" className="text-center">
-                        <DropdownMenuLabel className="font-bold text-md">Actions</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                            onClick={() => redirect("/dashboard/competitions/" + jeune.id)}
-                            className="text-green-800 focus:text-green-800 focus:bg-green-100 hover:cursor-pointer">
-                            <DoorOpen className="text-green-800" />Ouvrir
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem
-                            className="text-orange-400 focus:text-orange-400 focus:bg-orange-100 hover:cursor-pointer">
-                            <Edit2Icon className="text-orange-400" />Modifier
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={async () => {
-                            const response = await fetch("/api/v1/jeunes/delete", {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ id: jeune.id })
-                            });
-                            const responseData = await response.json();
+                <Sheet open={open} onOpenChange={setOpen}>
+                    <DropdownMenu >
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" className="h-8 p-0 w-full text-center">
+                                <span className="sr-only text-center">Ouvrir le menu</span>
+                                <MoreHorizontal className="h-4 w-4 text-right" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="start" className="text-center">
+                            <DropdownMenuLabel className="font-bold text-md">Actions</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                                onClick={() => redirect("/dashboard/competitions/" + jeune.id)}
+                                className="text-green-800 focus:text-green-800 focus:bg-green-100 hover:cursor-pointer">
+                                <DoorOpen className="text-green-800" />Ouvrir
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <SheetTrigger asChild>
+                                <DropdownMenuItem
+                                    className="text-orange-400 focus:text-orange-400 focus:bg-orange-100 hover:cursor-pointer">
+                                    <Edit2Icon className="text-orange-400" />Modifier
+                                </DropdownMenuItem>
+                            </SheetTrigger>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={async () => {
+                                const response = await fetch("/api/v1/jeunes/delete", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ id: jeune.id })
+                                });
+                                const responseData = await response.json();
 
-                            if (!response.ok) {
-                                throw new Error(
-                                    responseData || "Impossible de modifier la tâche"
-                                );
-                            }
+                                if (!response.ok) {
+                                    throw new Error(
+                                        responseData || "Impossible de modifier la tâche"
+                                    );
+                                    toast.error("Une erreur s'est produite" + responseData)
+                                }
+                                if (response.ok) {
+                                    toast.success('Jeune supprimé!')
+                                }
 
-                            mutate("/api/v1/jeunes");
-                        }}
-                            className="text-red-500 focus:text-red-500 focus:bg-red-100 hover:cursor-pointer">
-                            <TrashIcon className="text-red-500" /> Supprimer
-                        </DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu >
+                                mutate("/api/v1/jeunes");
+                            }}
+                                className="text-red-500 focus:text-red-500 focus:bg-red-100 hover:cursor-pointer">
+                                <TrashIcon className="text-red-500" /> Supprimer
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu >
+                    <SheetContent className="w-sm">
+                        <SheetHeader>
+                            <SheetTitle className="pt-6 text-center capitalize">Modifier Jeune : {jeune.prenom}</SheetTitle>
+                            <SheetDescription>
+                                Veuillez Vérifier et remplir les champs avant de valider svp!
+                            </SheetDescription>
+                        </SheetHeader>
+                        <JeuneForm
+                            submitButtonText="Modidfier"
+                            onSubmit={onSubmit}
+                            defaultValues={{
+                                nom: jeune.nom,
+                                prenom: jeune.prenom,
+                                telephone: jeune.telephone,
+                                email: jeune.email,
+                                tribu: jeune.tribu,
+                                isDeleted: jeune.isDeleted
+                            }} />
+                    </SheetContent>
+                </Sheet>
             )
         },
     }
