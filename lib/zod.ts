@@ -6,7 +6,7 @@ export const jeuneSchema = z.object({
     telephone: z.string().min(1, { message: 'Veuillez saisir le téléphone svp!' }),
     email: z.string().email({ message: 'Veuillez saisir un email valide svp!' }),
     tribu: z.string().min(1, { message: 'Veuillez saisir la tribu svp!' }),
-    isDeleted: z.boolean().default(false)
+    isDeleted: z.boolean()
 });
 
 export const identifianSchema = z.object({
