@@ -11,23 +11,6 @@ import { Send } from 'lucide-react'
 import SmsForm from "./smsForm"
 import { bddJeune, smsSelectedJeuneListing } from "@/lib/types"
 
-export function TriggerButton(from: string) {
-    if (from === 'TABLE') {
-        return (
-            <Button variant="ghost" size="icon" className="text-green-800 hover:bg-green-200 hover:text-green-500 m-1 hover:cursor-pointer">
-                <Send />
-            </Button>
-        )
-    }
-    if (from === 'HEADER') {
-        return (
-            <Button variant="default" className="bg-green-800 hover:bg-green-600 m-1 hover:cursor-pointer">
-                <Send />Envoyer SMS
-            </Button>
-        )
-    }
-}
-
 export default function SendSMS({ listSelected, data, from }: { listSelected: smsSelectedJeuneListing[], data: bddJeune[], from: string }) {
 
     let listJeuneSelected: string[] = []
@@ -42,7 +25,17 @@ export default function SendSMS({ listSelected, data, from }: { listSelected: sm
     return (
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
-                {TriggerButton(from)}
+                {(from === 'TABLE' ?
+                    (
+                        <Button variant="ghost" size="icon" className="text-green-800 hover:bg-green-200 hover:text-green-500 m-1 hover:cursor-pointer">
+                            <Send />
+                        </Button>
+                    ) : (
+                        <Button variant="default" className="bg-green-800 hover:bg-green-600 m-1 hover:cursor-pointer">
+                            <Send />Envoyer SMS
+                        </Button>
+                    )
+                )}
             </SheetTrigger>
             <SheetContent>
                 <SheetHeader>

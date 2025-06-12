@@ -4,12 +4,12 @@ import { ColumnDef, ColumnFiltersState, VisibilityState, getFilteredRowModel, So
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React, { RefObject } from "react";
+import { useState, RefObject } from "react";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Trash2Icon as Delete, SendHorizonal } from "lucide-react"
+import { Trash2Icon as Delete } from "lucide-react"
 import SendSMS from "../sendSMS"
-import { bddJeune } from "@/lib/types"
+import { bddJeune, smsSelectedJeuneListing } from "@/lib/types"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -23,12 +23,10 @@ function sendSmsTrigger() {
 }
 
 export function DataTable<TData, TValue>({ columns, data, dataJeunes, contentRef }: DataTableProps<TData, TValue>) {
-    const [sorting, setSorting] = React.useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
-    const [rowSelection, setRowSelection] = React.useState({})
-
-    const [selection, setSelection] = React.useState<string[]>([])
+    const [sorting, setSorting] = useState<SortingState>([])
+    const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
+    const [rowSelection, setRowSelection] = useState({})
 
     const table = useReactTable({
         data,
@@ -123,10 +121,11 @@ export function DataTable<TData, TValue>({ columns, data, dataJeunes, contentRef
                 {(table.getFilteredSelectedRowModel().rows.length > 0) &&
                     <div className="flex flex-row items-center rounded-lg mx-auto w-sm mb-2 p-0">
                         {(table.getFilteredSelectedRowModel().rows.length >= 2) &&
-                            <SendSMS from={'TABLE'} listSelected={table.getFilteredSelectedRowModel().rows} data={dataJeunes} />
+                            <SendSMS from={'TABLE'} listSelected={table.getGroupedSelectedRowModel().rows} data={dataJeunes} />
                         }
                         <Button variant="ghost" size="icon" onClick={() => {
-                            console.log('')
+                            console.log(rowSelection)
+                            console.log(table.getFilteredSelectedRowModel().rows)
                         }
                         } className="text-red-500 hover:bg-red-200 hover:text-red-500 m-1  hover:cursor-pointer">
                             <Delete />

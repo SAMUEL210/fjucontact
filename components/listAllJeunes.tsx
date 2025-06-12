@@ -30,7 +30,7 @@ export default function ListAllJeunes() {
             {(data != undefined) &&
                 <>
                     <div className="flex flex-row">
-                        <Button className="w-15 h-15 rounded-full shadow-lg fixed top-7 right-7 bg-green-800 hover:bg-green-600 m-1 hover:cursor-pointer" onClick={reactToPrintFn}>
+                        <Button className="w-15 h-15 rounded-full shadow-lg fixed bottom-7 right-7 bg-green-800 hover:bg-green-600 m-1 hover:cursor-pointer" onClick={reactToPrintFn}>
                             <PrinterIcon className="size-10" strokeWidth={1} />
                         </Button>
                         <SendSMS from={'HEADER'} listSelected={[]} data={data} />
