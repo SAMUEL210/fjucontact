@@ -4,7 +4,7 @@ import { ColumnDef, ColumnFiltersState, VisibilityState, getFilteredRowModel, So
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import React from "react";
+import React, { RefObject } from "react";
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Trash2Icon as Delete, SendHorizonal } from "lucide-react"
@@ -15,13 +15,14 @@ interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
     dataJeunes: bddJeune[]
+    contentRef: RefObject<HTMLTableElement | null>
 }
 
 function sendSmsTrigger() {
 
 }
 
-export function DataTable<TData, TValue>({ columns, data, dataJeunes }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, dataJeunes, contentRef }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
@@ -155,7 +156,7 @@ export function DataTable<TData, TValue>({ columns, data, dataJeunes }: DataTabl
                     </div>
                 </div>
             </div>
-            <div className="rounded-md border">
+            <div className="rounded-md border" ref={contentRef}>
                 <Table>
                     <TableHeader className="text-center">
                         {table.getHeaderGroups().map((headerGroup) => (
