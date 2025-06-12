@@ -1,5 +1,4 @@
 import ListAllJeunes from "@/components/listAllJeunes"
-import Navbar from "@/components/navbar"
 
 export default function Home() {
   return (
