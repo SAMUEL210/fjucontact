@@ -52,7 +52,7 @@ export default function NewJeune() {
                         prenom: "",
                         telephone: "",
                         email: "",
-                        tribu: "",
+                        idTribu: "",
                         isDeleted: false
                     }} />
             </SheetContent>
