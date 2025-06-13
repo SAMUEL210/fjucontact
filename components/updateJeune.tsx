@@ -55,7 +55,7 @@ export default function UpdateJeune({ id }: { id: string }) {
                         prenom: jeune?.prenom ?? "",
                         telephone: jeune?.telephone ?? "",
                         email: jeune?.email ?? "",
-                        tribu: jeune?.tribu ?? "",
+                        idTribu: jeune?.idTribu ?? "",
                         isDeleted: jeune?.isDeleted ?? false
                     }} />
             </SheetContent>
