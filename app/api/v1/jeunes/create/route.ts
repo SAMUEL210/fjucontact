@@ -24,7 +24,7 @@ export async function POST( request: NextRequest){
                     prenom: jeuneData.prenom.charAt(0).toLocaleUpperCase() + jeuneData.prenom.slice(1),
                     telephone: jeuneData.telephone,
                     email: jeuneData.email.toLocaleLowerCase(),
-                    tribu: jeuneData.tribu,
+                    idTribu: jeuneData.idTribu,
                     isDeleted: false
                 }
             });
