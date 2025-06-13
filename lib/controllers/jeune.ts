@@ -13,7 +13,7 @@ export async function createJeune(values:Jeune){
                     : "",
                 telephone: values.telephone,
                 email: values.email,
-                tribu: values.tribu,
+                idTribu: values.idTribu,
                 isDeleted: values.isDeleted
             }
         })
@@ -78,7 +78,7 @@ export async function updateJeune(id: string, values:Jeune){
                 prenom: values.prenom ? values.prenom.charAt(0).toLocaleUpperCase() + values.prenom.slice(1) : "",
                 telephone: values.telephone ? values.telephone : "",
                 email: values.email ? values.email.toLocaleLowerCase() : "",
-                tribu: values.tribu ? values.tribu : "",
+                idTribu: values.idTribu ? values.idTribu : "",
                 isDeleted: values.isDeleted
             }
         })
