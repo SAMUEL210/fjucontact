@@ -3,7 +3,7 @@ export type Jeune = {
     prenom : string | null
     telephone: string | null
     email: string | null
-    tribu: string | null
+    idTribu: string | null
     isDeleted: boolean
 }
 
@@ -13,7 +13,7 @@ export type bddJeune = {
     prenom: string
     telephone: string
     email: string
-    tribu: string
+    idTribu: string
     isDeleted: boolean
 }
 
@@ -31,6 +31,12 @@ export type smsInfos = {
     idJeune : string
     message: string
     status: string
+}
+
+export type Tribu = {
+    id: string
+    nom: string
+    description: string | null
 }
 
 export type TValue = any;
