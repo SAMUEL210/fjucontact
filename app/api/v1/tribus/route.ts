@@ -11,7 +11,7 @@ export async function GET(){
     //})
     //if(session != null){
         try {
-            const jeunes = await prisma.jeunes.findMany({
+            const tribus = await prisma.tribus.findMany({
                 where: {
                     isDeleted: false,
                 },
@@ -19,7 +19,7 @@ export async function GET(){
                     createdAt: 'asc',
                 },
             });
-            return NextResponse.json(jeunes);
+            return NextResponse.json(tribus);
         }catch (error){
             console.error('Erreur lors du chargement: ', error);
             return NextResponse.json({message: "Une erreur innattendu s'est produit"}, {status: 500});      
@@ -40,20 +40,20 @@ export async function POST( request: NextRequest){
         const {id} = body;
 
         if(!id){
-            return NextResponse.json({message: "L'id du jeune est requis"}, {status: 404})
+            return NextResponse.json({message: "L'id de la tribu est requis"}, {status: 404})
         }
 
-        const jeune = await prisma.jeunes.findUnique({
+        const tribu = await prisma.tribus.findUnique({
             where: {
                 id:id,
                 isDeleted: false
             }
         })
-        if(!jeune){
+        if(!tribu){
             return NextResponse.json({message: "Donnée non valide"}, {status: 404});
         }
 
-        return  NextResponse.json({jeune}, {status: 200});
+        return  NextResponse.json({tribu}, {status: 200});
 
         }catch(error){
             console.error("Erreur lors de la recherche du jeune : ", error);
