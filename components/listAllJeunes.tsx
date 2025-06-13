@@ -11,11 +11,10 @@ import { useRef } from "react";
 import { Button } from "./ui/button"
 import { PrinterIcon } from "lucide-react"
 
-
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function ListAllJeunes() {
-    let { data, error, isLoading } = useSWR<bddJeune[]>("/api/v1/jeunes", fetcher);
+    let { data } = useSWR<bddJeune[]>("/api/v1/jeunes", fetcher);
 
     const contentRef = useRef<HTMLTableElement>(null);
     const reactToPrintFn = useReactToPrint({

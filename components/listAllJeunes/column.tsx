@@ -8,14 +8,15 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { Checkbox } from "@/components/ui/checkbox"
 import { redirect, useRouter } from 'next/navigation'
 import { cn } from "@/lib/utils";
-import { bddJeune, Jeune } from "@/lib/types";
-import { mutate } from "swr"
-import UpdateJeune from "../updateJeune";
+import { bddJeune, Tribu } from "@/lib/types";
+import useSWR, { mutate } from "swr"
 import { Sheet, SheetTrigger, SheetContent, SheetTitle, SheetDescription, SheetHeader } from "../ui/sheet";
 import JeuneForm from "@/components/JeuneForm"
 import { updateJeune } from "@/lib/controllers/jeune";
 import { useState } from "react";
 import { toast } from "sonner";
+import { jeuneSchema } from "@/lib/zod";
+import z from "zod";
 
 export const columns: ColumnDef<bddJeune>[] = [
     {
@@ -104,18 +105,27 @@ export const columns: ColumnDef<bddJeune>[] = [
         header: () => <div className="text-center font-bold">Email</div>
     },
     {
-        accessorKey: "tribu",
-        header: () => <div className="text-center font-bold">Tribu</div>
+        accessorKey: "idTribu",
+        header: () => <div className="text-center font-bold">Tribu</div>,
+        cell: ({ row }) => {
+            const jeune = row.original
+            const fetcher = (url: string) => fetch(url).then((res) => res.json());
+            const { data: tribus } = useSWR<Tribu[]>("/api/v1/tribus", fetcher);
+            const tribu = tribus?.find((tribu) => tribu.id === jeune.idTribu)
+            return (
+                <div className="text-center">
+                    {tribu ? tribu.nom : "Aucune tribu"}
+                </div>
+            )
+        }
     },
     {
         accessorKey: "actions",
         header: () => <div className="text-center font-bold">Actions</div>,
         cell: ({ row }) => {
             const jeune = row.original
-
             const [open, setOpen] = useState(false)
-
-            const onSubmit = async (values: Jeune) => {
+            const onSubmit = async (values: z.infer<typeof jeuneSchema>) => {
                 try {
                     const updatedJeune = await updateJeune(jeune.id, values)
                     if (updatedJeune) {
@@ -194,7 +204,7 @@ export const columns: ColumnDef<bddJeune>[] = [
                                 prenom: jeune.prenom,
                                 telephone: jeune.telephone,
                                 email: jeune.email,
-                                tribu: jeune.tribu,
+                                idTribu: jeune.idTribu,
                                 isDeleted: jeune.isDeleted
                             }} />
                     </SheetContent>

@@ -10,7 +10,8 @@ import { PhoneInput } from "@/components/ui/phone-input"
 import { Select, SelectContent, SelectTrigger, SelectValue, SelectItem } from "@/components/ui/select"
 import { jeuneSchema } from "@/lib/zod"
 import { useState } from "react"
-import { bddJeune } from "@/lib/types"
+import { bddJeune, Tribu } from "@/lib/types"
+import useSWR from "swr"
 
 interface JeuneFormProps {
     submitButtonText: string,
@@ -18,21 +19,13 @@ interface JeuneFormProps {
     defaultValues: z.infer<typeof jeuneSchema>
 }
 
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
+
 export default function JeuneForm({ submitButtonText, defaultValues, onSubmit }: JeuneFormProps) {
-    const Tribus = [
-        {
-            id: "sdfskdfsdlkf",
-            nom: 'JUDA'
-        },
-        {
-            id: "sdfskdfsdfrlkf",
-            nom: 'EPHRAÏM'
-        },
-        {
-            id: "sdfskdsdfsdlkf",
-            nom: 'NEPHTHALI'
-        }
-    ]
+
+    let { data, error, isLoading } = useSWR<Tribu[]>("/api/v1/tribus", fetcher);
+    console.log("Tribus data: ", data);
+
     const [isSubmitting, setIsSubmitting] = useState(false);
     const form = useForm<z.infer<typeof jeuneSchema>>({
         resolver: zodResolver(jeuneSchema),
@@ -125,7 +118,7 @@ export default function JeuneForm({ submitButtonText, defaultValues, onSubmit }:
                     <div className="col-span-6">
                         <FormField
                             control={form.control}
-                            name="tribu"
+                            name="idTribu"
                             render={({ field }) => (
                                 <FormItem className="flex flex-col">
                                     <FormLabel>Tribu</FormLabel>
@@ -136,8 +129,8 @@ export default function JeuneForm({ submitButtonText, defaultValues, onSubmit }:
                                             </SelectTrigger>
                                         </FormControl>
                                         <SelectContent>
-                                            {(Tribus.map((tribu) => (
-                                                <SelectItem key={tribu.id} value={tribu.nom}>{tribu.nom}</SelectItem>
+                                            {(data?.map((tribu: Tribu) => (
+                                                <SelectItem key={tribu.id} value={tribu.id}>{tribu.nom}</SelectItem>
                                             )))}
                                         </SelectContent>
                                     </Select>

@@ -77,9 +77,9 @@ export function DataTable<TData, TValue>({ columns, data, dataJeunes, contentRef
                     />
                     <Input
                         placeholder="Filtrer tribu..."
-                        value={(table.getColumn("tribu")?.getFilterValue() as string) ?? ""}
+                        value={(table.getColumn("idTribu")?.getFilterValue() as string) ?? ""}
                         onChange={(event) =>
-                            table.getColumn("tribu")?.setFilterValue(event.target.value)
+                            table.getColumn("idTribu")?.setFilterValue(event.target.value)
                         }
                         className="max-w-sm"
                     />
