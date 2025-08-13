@@ -102,7 +102,21 @@ export const columns: ColumnDef<bddJeune>[] = [
     },
     {
         accessorKey: "email",
-        header: () => <div className="text-center font-bold">Email</div>
+        header: ({ column }) => {
+            return (
+                <div className="text-center">
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                        className="font-bold"
+                    >
+                        Email
+                        <ArrowUpDown className="ml-2 h-4 w-4" />
+                    </Button>
+                </div>
+
+            )
+        },
     },
     {
         accessorKey: "idTribu",
@@ -152,7 +166,7 @@ export const columns: ColumnDef<bddJeune>[] = [
                             <DropdownMenuLabel className="font-bold text-md">Actions</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
-                                onClick={() => redirect("/dashboard/competitions/" + jeune.id)}
+                                onClick={() => redirect("/jeunes/" + jeune.id)}
                                 className="text-green-800 focus:text-green-800 focus:bg-green-100 hover:cursor-pointer">
                                 <DoorOpen className="text-green-800" />Ouvrir
                             </DropdownMenuItem>
