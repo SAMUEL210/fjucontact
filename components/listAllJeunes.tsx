@@ -15,6 +15,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function ListAllJeunes() {
     let { data } = useSWR<bddJeune[]>("/api/v1/jeunes", fetcher);
+    console.log("Data fetched:", data);
 
     const contentRef = useRef<HTMLTableElement>(null);
     const reactToPrintFn = useReactToPrint({

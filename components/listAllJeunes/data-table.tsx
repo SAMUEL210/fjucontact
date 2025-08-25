@@ -9,7 +9,8 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Trash2Icon as Delete } from "lucide-react"
 import SendSMS from "../sendSMS"
-import { bddJeune, smsSelectedJeuneListing } from "@/lib/types"
+import { bddJeune, smsSelectedJeuneListing, Tribu } from "@/lib/types"
+import useSWR from "swr";
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -27,6 +28,9 @@ export function DataTable<TData, TValue>({ columns, data, dataJeunes, contentRef
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = useState({})
+
+    const fetcher = (url: string) => fetch(url).then((res) => res.json());
+    const { data: tribus } = useSWR<Tribu[]>("/api/v1/tribus", fetcher);
 
     const table = useReactTable({
         data,
@@ -78,9 +82,15 @@ export function DataTable<TData, TValue>({ columns, data, dataJeunes, contentRef
                     <Input
                         placeholder="Filtrer tribu..."
                         value={(table.getColumn("idTribu")?.getFilterValue() as string) ?? ""}
-                        onChange={(event) =>
-                            table.getColumn("idTribu")?.setFilterValue(event.target.value)
-                        }
+                        onChange={(event) => {
+                            const tribu = tribus?.find((tribu) => tribu.nom === event.target.value)
+                            if (tribu) {
+                                table.getColumn("idTribu")?.setFilterValue(tribu.nom)
+                            } else {
+                                table.getColumn("idTribu")?.setFilterValue("")
+                            }
+
+                        }}
                         className="max-w-sm"
                     />
                 </div>
